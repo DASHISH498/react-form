@@ -118,14 +118,14 @@ body {
           text-align: center;
         }
         h2 {
-          color: #ffffff;
+          color: #000;
           font-size: 30px;
           text-align: center;
           margin: 0 auto;
           margin-bottom: 15px;
         }
         p {
-          color: #ffffff;
+          color: #000;
           font-size: 16px;
           text-align: center;
           margin-bottom: 15px;
@@ -134,9 +134,9 @@ body {
           font-family: "Poppins", sans-serif;
           padding: 8px 16px;
           margin: 0 auto;
-          color: #ffffff;
+          color: #000;
           border-radius: 10px;
-          border: 1px solid #ffffff;
+          border: 1px solid #000;
           background-color: transparent;
           cursor: pointer;
         }
@@ -152,6 +152,19 @@ body {
         transition: 0.5s ease-in;
         border-top-right-radius: 40px;
         border-bottom-right-radius: 40px;
+      }
+
+      &.active {
+        .signin-text {
+          .inner-signin-text {
+            h2, p, button {
+              color: #fff;
+            }
+            button {
+              border-color: #fff;
+            }
+          }
+        }
       }
 
       &.active::after {
