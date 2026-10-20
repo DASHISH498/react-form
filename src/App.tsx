@@ -2,29 +2,58 @@ import { useState } from "react";
 import { FaGoogle, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 
+const PASS_ERROR = "Password kam se kam 8 characters ka hona chahiye";
+
 function App() {
   const [isLogin, setIsLogin] = useState(true);
   const [loginClick, setLoginClick] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [active, setActive] = useState(false);
+  const [passErrorMessage, setPassErrorMessage] = useState("");
 
   const logClick = () => {
+    // pehle password length check
+    if (password.length < 8) {
+      setPassErrorMessage("Password kam se kam 8 characters ka hona chahiye");
+      return;
+    }
+
+    setPassErrorMessage("");
+
     if (email === "ashish@gmail.com" && password === "ashish@123") {
       setLoginClick(false);
     } else {
-      alert("Invalid details")
+      alert("Invalid details");
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+
+    // error dikh raha ho to typing ke saath update ho
+    if (passErrorMessage) {
+      setPassErrorMessage(value.length < 8 ? PASS_ERROR : "");
     }
   };
 
   const LogOut = () => {
     setLoginClick(true);
-  }
+    setEmail("");
+    setPassword("");
+    setPassErrorMessage("");
+  };
 
   const handleSignup = () => {
     setIsLogin(false);
     setActive(true);
-  }
+  };
+
+  const handleGoLogin = () => {
+    setIsLogin(true);
+    setActive(false);
+  };
 
   return (
     <>
@@ -54,14 +83,35 @@ function App() {
                     </div>
                     <p>or use your email password</p>
                     <div className="form">
-                      <form action="">
+                      <form action="" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-group">
-                          <input type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+                          <input
+                            type="text"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
                         </div>
                         <div className="form-group">
-                          <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                          <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                          />
+                          <p
+                            className={passErrorMessage ? "" : "d-none"}
+                            style={{
+                              fontSize: "12px",
+                              color: "#000",
+                              padding: "5px 0px",
+                              textAlign: "left",
+                            }}
+                          >
+                            {passErrorMessage}
+                          </p>
                         </div>
-                        <button type="button" onClick={() => logClick()}>
+                        <button type="button" onClick={logClick}>
                           Login
                         </button>
                       </form>
@@ -90,14 +140,16 @@ function App() {
                       Register with your personal details to use all of site
                       feature.
                     </p>
-                    <button type="button">Login</button>
+                    <button type="button" onClick={handleGoLogin}>
+                      Login
+                    </button>
                   </div>
                 </div>
                 <div className="signin">
                   <div className="signin-inner">
                     <h2>Sign Up</h2>
                     <div className="form">
-                      <form action="">
+                      <form action="" onSubmit={(e) => e.preventDefault()}>
                         <div className="form-group">
                           <input type="text" placeholder="First Name" />
                         </div>
@@ -136,22 +188,21 @@ function App() {
                         </li>
                       </ul>
                     </div>
-                    <p
+                    <div
                       style={{
                         fontSize: "14px",
                         margin: "0 auto",
                         width: "100%",
                       }}
                     >
-                      Already have a account ? &nbsp;{" "}
-                      <p
+                      Already have a account ? &nbsp;
+                      <span
                         style={{ color: "blue", cursor: "pointer" }}
-                        onClick={() => setIsLogin(true)}
+                        onClick={handleGoLogin}
                       >
-                        {" "}
                         Login
-                      </p>
-                    </p>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -226,7 +277,21 @@ function App() {
                 </div>
 
                 <div className="logout" style={{ marginLeft: "15px" }}>
-                  <button type="button" onClick={() => LogOut()} style={{ cursor: "pointer", padding: "8px 16px", borderRadius: "10px", backgroundColor: "#165823", color: "#fff", border: "0", outline: "none" }}>Logout</button>
+                  <button
+                    type="button"
+                    onClick={LogOut}
+                    style={{
+                      cursor: "pointer",
+                      padding: "8px 16px",
+                      borderRadius: "10px",
+                      backgroundColor: "#165823",
+                      color: "#fff",
+                      border: "0",
+                      outline: "none",
+                    }}
+                  >
+                    Logout
+                  </button>
                 </div>
               </div>
             </header>
@@ -280,31 +345,34 @@ function App() {
                   </div>
                   <div className="chart">
                     <div className="chart__col">
-                      <div className="chart__bar"></div>
-                      <span>Tue</span>
-                    </div>
-                    <div className="chart__col">
-                      <div className="chart__bar"></div>
+                      <div className="chart__bar" style={{ "--h": "55%" }}></div>
                       <span>Mon</span>
                     </div>
                     <div className="chart__col">
-                      <div className="chart__bar"></div>
+                      <div className="chart__bar" style={{ "--h": "75%" }}></div>
+                      <span>Tue</span>
+                    </div>
+                    <div className="chart__col">
+                      <div className="chart__bar" style={{ "--h": "45%" }}></div>
                       <span>Wed</span>
                     </div>
                     <div className="chart__col">
-                      <div className="chart__bar"></div>
+                      <div
+                        className="chart__bar chart__bar--active"
+                        style={{ "--h": "92%" }}
+                      ></div>
                       <span>Thu</span>
                     </div>
                     <div className="chart__col">
-                      <div className="chart__bar"></div>
+                      <div className="chart__bar" style={{ "--h": "68%" }}></div>
                       <span>Fri</span>
                     </div>
                     <div className="chart__col">
-                      <div className="chart__bar"></div>
+                      <div className="chart__bar" style={{ "--h": "82%" }}></div>
                       <span>Sat</span>
                     </div>
                     <div className="chart__col">
-                      <div className="chart__bar"></div>
+                      <div className="chart__bar" style={{ "--h": "38%" }}></div>
                       <span>Sun</span>
                     </div>
                   </div>
